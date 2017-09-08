@@ -9,7 +9,7 @@ import java.util.List;
  * Created by Shashvat Kedia on 08-09-2017.
  */
 
-public class Tasker extends AsyncTaskLoader<List<MovieInfo>>{
+public class Tasker extends android.support.v4.content.AsyncTaskLoader<List<MovieInfo>>{
     String murl;
 
     public Tasker(Context con,String url){
