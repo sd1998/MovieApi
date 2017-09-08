@@ -28,6 +28,10 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, android.app.LoaderManager.LoaderCallbacks<Object> {
     private static String API_KEY=""; //Enter your api key
+    private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&page=1";
+    private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US&page=1";
+    private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US&page=1";
+    private static String url="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +94,18 @@ public class MainActivity extends AppCompatActivity
             GridView grid=(GridView) findViewById(R.id.data_grid);
             ConnectivityManager cm=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo net=cm.getActiveNetworkInfo();
+            if(temp==1){
+              url=popular_url;
+            }
+            else if(temp==2){
+                url=top_rated_url;
+            }
+            else{
+                url=upcoming_url;
+            }
             if(net != null && net.isConnected()){
                 android.app.LoaderManager loaderManager=getLoaderManager();
                 loaderManager.initLoader(1,null,this);
-
             }
              else{
                 Log.e("#","Error No Internet Connection");
@@ -113,16 +125,16 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public Loader<List<MovieInfo>> onCreateLoader(int i, Bundle bundle) {
-        return null;
+        return new Tasker(this,url);
     }
 
     @Override
-    public void onLoadFinished(Loader<Object> loader, Object o) {
+    public void onLoadFinished(Loader<List<MovieInfo>> loader, Object o) {
 
     }
 
     @Override
-    public void onLoaderReset(Loader<Object> loader) {
+    public void onLoaderReset(Loader<List<MovieInfo>> loader) {
 
     }
 }
