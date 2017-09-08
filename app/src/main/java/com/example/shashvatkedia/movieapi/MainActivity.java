@@ -26,7 +26,7 @@ import android.widget.GridView;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, android.app.LoaderManager.LoaderCallbacks<Object> {
+        implements NavigationView.OnNavigationItemSelectedListener,android.support.v4.app.LoaderManager.LoaderCallbacks<List<MovieInfo>> {
     private static String API_KEY=""; //Enter your api key
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&page=1";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US&page=1";
@@ -124,17 +124,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public Loader<List<MovieInfo>> onCreateLoader(int i, Bundle bundle) {
+    public android.support.v4.content.Loader<List<MovieInfo>> onCreateLoader(int i, Bundle bundle) {
         return new Tasker(this,url);
     }
 
     @Override
-    public void onLoadFinished(Loader<List<MovieInfo>> loader, Object o) {
+    public void onLoadFinished(android.support.v4.content.Loader<List<MovieInfo>> loader, List<MovieInfo> o) {
 
     }
 
     @Override
-    public void onLoaderReset(Loader<List<MovieInfo>> loader) {
+    public void onLoaderReset(android.support.v4.content.Loader<List<MovieInfo>> loader) {
 
     }
 }
