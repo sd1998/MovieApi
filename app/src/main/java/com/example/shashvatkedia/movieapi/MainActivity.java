@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity
     private static String url="";
     public List<MovieInfo> movie=new ArrayList<MovieInfo>();
     public CustomGridAdapter adapt;
+    public  ConnectivityManager cm;
+    public NetworkInfo net;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+       // cm=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        //net=cm.getActiveNetworkInfo();
         defineView(R.id.Popular);
     }
 
@@ -96,8 +100,6 @@ public class MainActivity extends AppCompatActivity
     public void setAdapt(int temp){
         if(temp!=4){
             GridView grid=(GridView) findViewById(R.id.data_grid);
-            ConnectivityManager cm=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo net=cm.getActiveNetworkInfo();
             if(temp==1){
               url=popular_url;
             }
@@ -107,15 +109,15 @@ public class MainActivity extends AppCompatActivity
             else{
                 url=upcoming_url;
             }
-            if(net != null && net.isConnected()){
-                android.app.LoaderManager loaderManager=getLoaderManager();
-                loaderManager.initLoader(1,null,(android.app.LoaderManager.LoaderCallbacks<List<MovieInfo>>) this);
-            }
-             else{
-                Log.e("#","Error No Internet Connection");
-            }
-            adapt=new CustomGridAdapter(MainActivity.this, (ArrayList<MovieInfo>) movie);
-            grid.setAdapter(adapt);
+            //if(net != null && net.isConnected()){
+              // android.app.LoaderManager loaderManager=getLoaderManager();
+                //loaderManager.initLoader(1,null,(android.app.LoaderManager.LoaderCallbacks<List<MovieInfo>>) this);
+            //}
+             //else{
+               //Log.e("#","Error No Internet Connection");
+            //}
+            //adapt=new CustomGridAdapter(MainActivity.this, (ArrayList<MovieInfo>) movie);
+            //grid.setAdapter(adapt);
         }
     }
     
