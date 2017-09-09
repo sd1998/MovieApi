@@ -2,6 +2,7 @@ package com.example.shashvatkedia.movieapi;
 
 import android.content.Context;
 import android.content.Loader;
+import android.database.Cursor;
 import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -22,16 +23,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
-
+import android.support.v4.app.LoaderManager;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,android.support.v4.app.LoaderManager.LoaderCallbacks<List<MovieInfo>> {
+        implements NavigationView.OnNavigationItemSelectedListener,LoaderManager.LoaderCallbacks<List<MovieInfo>>{
     private static String API_KEY=""; //Enter your api key
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&page=1";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US&page=1";
     private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US&page=1";
     private static String url="";
+    public List<MovieInfo> movie=new ArrayList<MovieInfo>();
+    public CustomGridAdapter adapt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,12 +109,12 @@ public class MainActivity extends AppCompatActivity
             }
             if(net != null && net.isConnected()){
                 android.app.LoaderManager loaderManager=getLoaderManager();
-                loaderManager.initLoader(1,null,this);
+                loaderManager.initLoader(1,null,(android.app.LoaderManager.LoaderCallbacks<List<MovieInfo>>) this);
             }
              else{
                 Log.e("#","Error No Internet Connection");
             }
-            CustomGridAdapter adapt=new CustomGridAdapter(MainActivity.this);
+            adapt=new CustomGridAdapter(MainActivity.this, (ArrayList<MovieInfo>) movie);
             grid.setAdapter(adapt);
         }
     }
@@ -129,8 +133,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onLoadFinished(android.support.v4.content.Loader<List<MovieInfo>> loader, List<MovieInfo> o) {
-
+    public void onLoadFinished(android.support.v4.content.Loader<List<MovieInfo>> loader, List<MovieInfo> info) {
+         if(info != null && !info.isEmpty()){
+             movie=info;
+         }
     }
 
     @Override
