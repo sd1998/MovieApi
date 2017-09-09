@@ -12,6 +12,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -28,16 +30,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,LoaderManager.LoaderCallbacks<List<MovieInfo>>{
+        implements NavigationView.OnNavigationItemSelectedListener,CustomGridAdapter.ItemClickListener{
     private static String API_KEY=""; //Enter your api key
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&page=1";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US&page=1";
     private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US&page=1";
     private static String url="";
-    public List<MovieInfo> movie=new ArrayList<MovieInfo>();
+    public  static ArrayList<MovieInfo> movie=new ArrayList<MovieInfo>();
     public CustomGridAdapter adapt;
     public  ConnectivityManager cm;
     public NetworkInfo net;
+    private ArrayList<String> image_source=new ArrayList<String>();
+    private ArrayList<String> names=new ArrayList<String>();
+    private static int no_of_columns=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +56,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-       // cm=(ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        //net=cm.getActiveNetworkInfo();
         defineView(R.id.Popular);
     }
 
@@ -99,7 +102,9 @@ public class MainActivity extends AppCompatActivity
 
     public void setAdapt(int temp){
         if(temp!=4){
-            GridView grid=(GridView) findViewById(R.id.data_grid);
+            image_source.clear();
+            names.clear();
+
             if(temp==1){
               url=popular_url;
             }
@@ -109,16 +114,23 @@ public class MainActivity extends AppCompatActivity
             else{
                 url=upcoming_url;
             }
-            //if(net != null && net.isConnected()){
-              // android.app.LoaderManager loaderManager=getLoaderManager();
-                //loaderManager.initLoader(1,null,(android.app.LoaderManager.LoaderCallbacks<List<MovieInfo>>) this);
-            //}
-             //else{
-               //Log.e("#","Error No Internet Connection");
-            //}
-            //adapt=new CustomGridAdapter(MainActivity.this, (ArrayList<MovieInfo>) movie);
-            //grid.setAdapter(adapt);
+            Tasker task=new Tasker();
+            task.execute(url);
+            for(MovieInfo info:movie){
+                image_source.add(info.getPath());
+                names.add(info.getName());
+            }
+            RecyclerView recycler=(RecyclerView) findViewById(R.id.data_grid);
+            recycler.setLayoutManager(new GridLayoutManager(this,no_of_columns));
+            CustomGridAdapter adapt=new CustomGridAdapter(this,names,image_source);
+            adapt.setClickListener(this);
+            recycler.setAdapter(adapt);
         }
+    }
+
+    @Override
+    public void onItemClick(View view,int position){
+        ;
     }
     
     @SuppressWarnings("StatementWithEmptyBody")
@@ -127,22 +139,5 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         defineView(id);
         return true;
-    }
-
-    @Override
-    public android.support.v4.content.Loader<List<MovieInfo>> onCreateLoader(int i, Bundle bundle) {
-        return new Tasker(this,url);
-    }
-
-    @Override
-    public void onLoadFinished(android.support.v4.content.Loader<List<MovieInfo>> loader, List<MovieInfo> info) {
-         if(info != null && !info.isEmpty()){
-             movie=info;
-         }
-    }
-
-    @Override
-    public void onLoaderReset(android.support.v4.content.Loader<List<MovieInfo>> loader) {
-
     }
 }

@@ -31,7 +31,7 @@ public class Query {
 
     }
 
-    public static List<MovieInfo> fetchData(String murl){
+    public static ArrayList<MovieInfo> fetchData(String murl){
         URL url=createUrl(murl);
         String response = null;
         try{
@@ -40,7 +40,7 @@ public class Query {
         catch(IOException e){
             Log.e("#","Error IOException");
         }
-        List<MovieInfo> info=extractjson(response);
+        ArrayList<MovieInfo> info=extractjson(response);
         return info;
     }
 
@@ -91,11 +91,11 @@ public class Query {
         return build.toString();
     }
 
-    public static List<MovieInfo> extractjson(String response){
+    public static ArrayList<MovieInfo> extractjson(String response){
         if(TextUtils.isEmpty(response)){
             return null;
         }
-        List<MovieInfo> info=new ArrayList<>();
+        ArrayList<MovieInfo> info=new ArrayList<>();
         long length=0;
         try{
             JSONObject obj=new JSONObject(response);

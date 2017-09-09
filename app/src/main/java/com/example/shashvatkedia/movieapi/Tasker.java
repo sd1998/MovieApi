@@ -2,34 +2,31 @@ package com.example.shashvatkedia.movieapi;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.os.AsyncTask;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Shashvat Kedia on 08-09-2017.
  */
 
-public class Tasker extends android.support.v4.content.AsyncTaskLoader<List<MovieInfo>>{
-    String murl;
-
-    public Tasker(Context con,String url){
-        super(con);
-        murl=url;
-    }
-
+public class Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>> {
     @Override
-    protected void onStartLoading(){
-        forceLoad();
-    }
-
-    @Override
-    public List<MovieInfo> loadInBackground(){
-        if(murl == null){
+    protected ArrayList<MovieInfo> doInBackground(String... urls) {
+        if (urls.length < 1 || urls[0] == null) {
             return null;
         }
-        List<MovieInfo> Info=Query.fetchData(murl);
-        return Info;
+        ArrayList<MovieInfo> info = Query.fetchData(urls[0]);
+        return info;
     }
 
-
+    @Override
+    protected void onPostExecute(ArrayList<MovieInfo> info){
+        if(info!=null) {
+            MainActivity.movie.clear();
+            MainActivity.movie = info;
+        }
+    }
 }
+
