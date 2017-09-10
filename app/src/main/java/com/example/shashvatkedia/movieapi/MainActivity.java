@@ -1,6 +1,7 @@
 package com.example.shashvatkedia.movieapi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Movie;
@@ -26,23 +27,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 import android.support.v4.app.LoaderManager;
+import android.widget.ListView;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,CustomGridAdapter.ItemClickListener{
+        implements NavigationView.OnNavigationItemSelectedListener{
     private static String API_KEY=""; //Enter your api key
-    private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US&page=1";
-    private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US&page=1";
-    private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US&page=1";
-    private static String url="";
+    private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US";
+    private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US";
+    private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US";
+    public static String url="";
     public  static ArrayList<MovieInfo> movie=new ArrayList<MovieInfo>();
     public CustomGridAdapter adapt;
     public  ConnectivityManager cm;
     public NetworkInfo net;
-    private ArrayList<String> image_source=new ArrayList<String>();
-    private ArrayList<String> names=new ArrayList<String>();
-    private static int no_of_columns=2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity
                 temp=4;
                 break;
         }
+        setAdapt(temp);
         if(id != R.id.search) {
             frag = new GeneralFragment();
         }
@@ -97,14 +99,10 @@ public class MainActivity extends AppCompatActivity
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
-        setAdapt(temp);
     }
 
     public void setAdapt(int temp){
         if(temp!=4){
-            image_source.clear();
-            names.clear();
-
             if(temp==1){
               url=popular_url;
             }
@@ -115,24 +113,12 @@ public class MainActivity extends AppCompatActivity
                 url=upcoming_url;
             }
             Tasker task=new Tasker();
-            task.execute(url);
-            for(MovieInfo info:movie){
-                image_source.add(info.getPath());
-                names.add(info.getName());
-            }
-            RecyclerView recycler=(RecyclerView) findViewById(R.id.data_grid);
-            recycler.setLayoutManager(new GridLayoutManager(this,no_of_columns));
-            CustomGridAdapter adapt=new CustomGridAdapter(this,names,image_source);
-            adapt.setClickListener(this);
-            recycler.setAdapter(adapt);
+            task.execute(MainActivity.url);
+            ListView display=(ListView) findViewById(R.id.namegrid);
+            CustomGridAdapter adapt=new CustomGridAdapter(this,movie);
+            display.setAdapter(adapt);
         }
     }
-
-    @Override
-    public void onItemClick(View view,int position){
-        ;
-    }
-    
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

@@ -54,6 +54,7 @@ public class Query {
         try{
             connection=(HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+            connection.addRequestProperty("Accept", "application/json");
             connection.connect();
             if(connection.getResponseCode()==200){
                 input=connection.getInputStream();
@@ -96,19 +97,12 @@ public class Query {
             return null;
         }
         ArrayList<MovieInfo> info=new ArrayList<>();
-        long length=0;
         try{
             JSONObject obj=new JSONObject(response);
-            JSONArray mov=obj.getJSONArray("results");
-            if(mov.length()>=50){
-                length=50;
-            }
-            else{
-                length=50-mov.length();
-            }
-            for(int i=0;i<=length-1;i++){
+            JSONArray mov=(JSONArray) obj.getJSONArray("results");
+            for(int i=0;i<=mov.length()-1;i++){
                 JSONObject curr=mov.getJSONObject(i);
-                String name=curr.getString("title");
+                String name=curr.getString("original_title");
                 String path=curr.getString("poster_path");
                 long id=curr.getLong("id");
                 MovieInfo movie=new MovieInfo(name,path,id);
@@ -116,7 +110,7 @@ public class Query {
             }
         }
         catch(JSONException e){
-            Log.e("#","Error JSONException");
+            Log.e("#","Error JSONException"+e);
         }
         return info;
     }
