@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.widget.GridView;
 import android.support.v4.app.LoaderManager;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -35,13 +36,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
-    private static String API_KEY=""; //Enter your api key
+    public static String API_KEY=""; //Enter your api key
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US";
     private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US";
     public static String url="";
     public  static ArrayList<MovieInfo> movie=new ArrayList<MovieInfo>();
-    public CustomGridAdapter adapt;
+    public static CustomGridAdapter adapt;
     public  ConnectivityManager cm;
     public NetworkInfo net;
     @Override
@@ -57,6 +58,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        ListView display=(ListView) findViewById(R.id.namegrid);
+        adapt=new CustomGridAdapter(this,movie);
+        display.setAdapter(adapt);
         defineView(R.id.Popular);
     }
 
@@ -84,7 +88,6 @@ public class MainActivity extends AppCompatActivity
                 temp=3;
                 break;
             case R.id.search :
-                frag = new searchFragment();
                 temp=4;
                 break;
         }
@@ -96,6 +99,10 @@ public class MainActivity extends AppCompatActivity
             FragmentTransaction trans=getSupportFragmentManager().beginTransaction();
             trans.replace(R.id.content_frame,frag);
             trans.commit();
+        }
+        if(temp==4){
+            Intent i=new Intent(MainActivity.this,custom_search.class);
+            startActivity(i);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -113,10 +120,7 @@ public class MainActivity extends AppCompatActivity
                 url=upcoming_url;
             }
             Tasker task=new Tasker();
-            task.execute(MainActivity.url);
-            ListView display=(ListView) findViewById(R.id.namegrid);
-            CustomGridAdapter adapt=new CustomGridAdapter(this,movie);
-            display.setAdapter(adapt);
+            task.execute(url);
         }
     }
     @SuppressWarnings("StatementWithEmptyBody")

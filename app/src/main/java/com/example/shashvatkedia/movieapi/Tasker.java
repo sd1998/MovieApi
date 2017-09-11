@@ -3,9 +3,14 @@ package com.example.shashvatkedia.movieapi;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.view.View;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.shashvatkedia.movieapi.MainActivity.adapt;
+import static com.example.shashvatkedia.movieapi.MainActivity.movie;
 
 /**
  * Created by Shashvat Kedia on 08-09-2017.
@@ -17,6 +22,7 @@ public class Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>> {
         if (urls.length < 1 || urls[0] == null) {
             return null;
         }
+        adapt.clear();
         ArrayList<MovieInfo> info = Query.fetchData(urls[0]);
         return info;
     }
@@ -24,8 +30,9 @@ public class Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>> {
     @Override
     protected void onPostExecute(ArrayList<MovieInfo> info){
         if(info!=null) {
-            MainActivity.movie.clear();
-            MainActivity.movie = info;
+            movie.clear();
+            movie = info;
+            MainActivity.adapt.addAll(movie);
         }
     }
 }

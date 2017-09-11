@@ -21,6 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".custom_search" />
+        <activity android:name=".Movie_info"></activity>
     </application>
 
 </manifest>
