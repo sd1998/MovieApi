@@ -36,7 +36,6 @@ public class custom_search extends AppCompatActivity {
                 if(!query_movie.equals(check_query_movie)){
                     Query_Tasker task=new Query_Tasker();
                     task.execute(query_movie);
-
                 }
             }
         });

@@ -1,6 +1,7 @@
 package com.example.shashvatkedia.movieapi;
 
 import android.content.AsyncTaskLoader;
+import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.os.Build.VERSION_CODES.M;
 import static com.example.shashvatkedia.movieapi.MainActivity.adapt;
 import static com.example.shashvatkedia.movieapi.MainActivity.movie;
 
@@ -17,22 +19,30 @@ import static com.example.shashvatkedia.movieapi.MainActivity.movie;
  */
 
 public class Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>> {
+
+    Context c;
+    public Tasker(Context con){
+        super();
+        c=con;
+    }
+
     @Override
     protected ArrayList<MovieInfo> doInBackground(String... urls) {
         if (urls.length < 1 || urls[0] == null) {
             return null;
         }
-        adapt.clear();
+        MainActivity.movie.clear();
         ArrayList<MovieInfo> info = Query.fetchData(urls[0]);
         return info;
     }
 
     @Override
     protected void onPostExecute(ArrayList<MovieInfo> info){
+        super.onPostExecute(info);
         if(info!=null) {
-            movie.clear();
-            movie = info;
-            MainActivity.adapt.addAll(movie);
+            MainActivity.movie = info;
+            MainActivity.adapt=new CustomGridAdapter(c,info);
+            MainActivity.grid.setAdapter(adapt);
         }
     }
 }

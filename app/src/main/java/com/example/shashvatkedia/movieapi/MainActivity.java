@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.support.v4.app.LoaderManager;
 import android.widget.ListView;
@@ -36,15 +37,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
-    public static String API_KEY=""; //Enter your api key
+    public static String API_KEY="3891232d1a4e53a86c971b06f00fb851"; //Enter your api key
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US";
     private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US";
     public static String url="";
     public  static ArrayList<MovieInfo> movie=new ArrayList<MovieInfo>();
     public static CustomGridAdapter adapt;
-    public  ConnectivityManager cm;
-    public NetworkInfo net;
+    public static GridView grid;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        ListView display=(ListView) findViewById(R.id.namegrid);
+        grid=(GridView) findViewById(R.id.namegrid);
         adapt=new CustomGridAdapter(this,movie);
-        display.setAdapter(adapt);
+        grid.setAdapter(adapt);
         defineView(R.id.Popular);
     }
 
@@ -116,10 +116,10 @@ public class MainActivity extends AppCompatActivity
             else if(temp==2){
                 url=top_rated_url;
             }
-            else{
-                url=upcoming_url;
+            else {
+                url = upcoming_url;
             }
-            Tasker task=new Tasker();
+            Tasker task=new Tasker(MainActivity.this);
             task.execute(url);
         }
     }

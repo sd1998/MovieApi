@@ -18,7 +18,9 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static android.os.Build.VERSION_CODES.M;
+import static com.example.shashvatkedia.movieapi.MainActivity.movie;
 import static java.lang.System.in;
 
 /**
@@ -41,6 +43,61 @@ public class Query {
             Log.e("#","Error IOException");
         }
         ArrayList<MovieInfo> info=extractjson(response);
+        return info;
+    }
+
+    public static ExtendedMovieInfo findMovieInfo(String murl){
+        URL url=createUrl(murl);
+        String response=null;
+        try{
+            response=makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","IOException");
+        }
+        ExtendedMovieInfo info=extractMovieInfo(response);
+        return info;
+    }
+
+    public static ExtendedMovieInfo extractMovieInfo(String response){
+        if(TextUtils.isEmpty(response)){
+            return null;
+        }
+        ExtendedMovieInfo info=null;
+        try{
+            JSONObject obj=new JSONObject(response);
+            boolean age=obj.getBoolean("adult");
+            String movie_age="",movie_name,movie_desc,movie_release;
+            String[] movie_genres={"","",""};
+            int length=0,movie_id,movie_runtime;
+            double movie_rating;
+            if(age){
+                movie_age="A";
+            }
+            else{
+                movie_age="UA";
+            }
+            JSONArray genre=(JSONArray) obj.getJSONArray("genres");
+            if(genre.length()>=3){
+                length=3;
+            }else{
+                length=genre.length();
+            }
+            for(int i=0;i<=length-1;i++){
+                JSONObject array_obj=(JSONObject) genre.getJSONObject(i);
+                movie_genres[i]=array_obj.getString("name");
+            }
+            movie_id=obj.getInt("id");
+            movie_name=obj.getString("original_title");
+            movie_desc=obj.getString("overview");
+            movie_rating=obj.getDouble("vote_average");
+            movie_runtime=obj.getInt("runtime");
+            movie_release=obj.getString("release_date");
+            info=new ExtendedMovieInfo(movie_name,movie_desc,movie_id,movie_runtime,movie_release,movie_genres[0],movie_genres[1],movie_genres[2],movie_age,movie_rating);
+        }
+        catch(JSONException e){
+            Log.e("#","JSONException");
+        }
         return info;
     }
 
