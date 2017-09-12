@@ -15,8 +15,9 @@ public class ExtendedMovieInfo {
     public String[] movie_genre=new String[3];
     public String movie_age;
     public double movie_rating;
+    public String movie_poster_path;
 
-    public ExtendedMovieInfo(String name,String desc,int id,int runtime,String release,String genre1,String genre2,String genre3,String age,double rating){
+    public ExtendedMovieInfo(String name,String desc,int id,int runtime,String release,String genre1,String genre2,String genre3,String age,double rating,String poster){
         movie_name=name;
         movie_desc=desc;
         movie_id=id;
@@ -27,6 +28,7 @@ public class ExtendedMovieInfo {
         movie_genre[2]=genre3;
         movie_age=age;
         movie_rating=rating;
+        movie_poster_path=poster;
     }
 
     public String getName(){
@@ -62,5 +64,9 @@ public class ExtendedMovieInfo {
 
     public double getRating(){
         return movie_rating;
+    }
+
+    public String getPath(){
+        return movie_poster_path;
     }
 }

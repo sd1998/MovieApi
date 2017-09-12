@@ -95,7 +95,7 @@
        <TextView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:text="Release Data:"
+           android:text="Release Date:"
            android:id="@+id/release_date_view"
            android:layout_marginLeft="8dp"
            />

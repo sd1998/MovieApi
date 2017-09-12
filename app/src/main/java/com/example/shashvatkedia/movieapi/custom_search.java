@@ -1,5 +1,6 @@
 package com.example.shashvatkedia.movieapi;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,14 +29,18 @@ public class custom_search extends AppCompatActivity {
                         prev=i+1;
                     }
                 }
-                if(query_name.equals(" ")){
+                if(query_name.equals("")){
                     query_name=movie_name;
                 }
                 query_movie=query_movie+query_name;
-                query_movie.trim();
+                query_movie=query_movie.trim();
                 if(!query_movie.equals(check_query_movie)){
                     Query_Tasker task=new Query_Tasker();
                     task.execute(query_movie);
+                    String url=CustomGridAdapter.query_url1+id+CustomGridAdapter.query_url2+MainActivity.API_KEY+CustomGridAdapter.query_url3;
+                    Intent i=new Intent(custom_search.this,Movie_info.class);
+                    i.putExtra("Query_URL",url);
+                    startActivity(i);
                 }
             }
         });
