@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".custom_search" />
-        <activity android:name=".Movie_info"></activity>
+        <activity android:name=".Movie_info" />
+        <activity android:name=".Cast_display"></activity>
     </application>
 
 </manifest>

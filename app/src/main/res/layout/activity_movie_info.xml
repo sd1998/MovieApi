@@ -75,13 +75,6 @@
                 android:layout_marginRight="8dp"
                 />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/genre_3"
-                android:layout_marginRight="8dp"
-                />
-
         </LinearLayout>
 
    <LinearLayout
@@ -149,7 +142,7 @@
        android:layout_below="@id/movie_desc_view"
        android:layout_marginLeft="8dp"
        android:layout_marginTop="16dp"
-       android:text="Credits"
+       android:text="Cast"
        android:id="@+id/credits_view"
        />
 

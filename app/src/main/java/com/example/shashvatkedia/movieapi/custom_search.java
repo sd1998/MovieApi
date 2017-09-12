@@ -35,12 +35,8 @@ public class custom_search extends AppCompatActivity {
                 query_movie=query_movie+query_name;
                 query_movie=query_movie.trim();
                 if(!query_movie.equals(check_query_movie)){
-                    Query_Tasker task=new Query_Tasker();
+                    Query_Tasker task=new Query_Tasker(custom_search.this);
                     task.execute(query_movie);
-                    String url=CustomGridAdapter.query_url1+id+CustomGridAdapter.query_url2+MainActivity.API_KEY+CustomGridAdapter.query_url3;
-                    Intent i=new Intent(custom_search.this,Movie_info.class);
-                    i.putExtra("Query_URL",url);
-                    startActivity(i);
                 }
             }
         });

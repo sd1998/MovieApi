@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -70,9 +72,8 @@ public class CustomGridAdapter extends BaseAdapter{
             @Override
             public void onClick(View view) {
                 String url=query_url1+getItem(position).getId()+query_url2+MainActivity.API_KEY+query_url3;
-                Intent i=new Intent(con,Movie_info.class);
-                i.putExtra("Query_URL",url);
-                con.startActivity(i);
+                Movie_Info_Tasker task=new Movie_Info_Tasker(con);
+                task.execute(url);
             }
         });
         return row;

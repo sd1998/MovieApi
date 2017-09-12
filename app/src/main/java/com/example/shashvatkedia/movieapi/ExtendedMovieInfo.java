@@ -12,12 +12,12 @@ public class ExtendedMovieInfo {
     public int movie_id;
     public int movie_runtime;
     public String movie_release;
-    public String[] movie_genre=new String[3];
+    public String[] movie_genre=new String[2];
     public String movie_age;
     public double movie_rating;
     public String movie_poster_path;
 
-    public ExtendedMovieInfo(String name,String desc,int id,int runtime,String release,String genre1,String genre2,String genre3,String age,double rating,String poster){
+    public ExtendedMovieInfo(String name,String desc,int id,int runtime,String release,String genre1,String genre2,String age,double rating,String poster){
         movie_name=name;
         movie_desc=desc;
         movie_id=id;
@@ -25,7 +25,6 @@ public class ExtendedMovieInfo {
         movie_release=release;
         movie_genre[0]=genre1;
         movie_genre[1]=genre2;
-        movie_genre[2]=genre3;
         movie_age=age;
         movie_rating=rating;
         movie_poster_path=poster;

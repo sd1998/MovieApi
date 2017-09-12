@@ -59,6 +59,42 @@ public class Query {
         return info;
     }
 
+    public static ArrayList<CastInfo> findCast(String murl){
+        URL url=createUrl(murl);
+        String response=null;
+        try{
+            response=makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","IOException");
+        }
+        ArrayList<CastInfo> cast=extractCast(response);
+        return cast;
+    }
+
+    public static ArrayList<CastInfo> extractCast(String response){
+        if(TextUtils.isEmpty(response)){
+            return null;
+        }
+        ArrayList<CastInfo> cast=new ArrayList<CastInfo>();
+        try{
+            JSONObject obj=new JSONObject(response);
+            JSONArray cast_info=(JSONArray) obj.getJSONArray("cast");
+            for(int i=0;i<= cast_info.length();i++){
+                JSONObject array_obj=(JSONObject) cast_info.getJSONObject(i);
+                String character=array_obj.getString("character");
+                String name=array_obj.getString("name");
+                String path=array_obj.getString("profile_path");
+                CastInfo info=new CastInfo(character,name,path);
+                cast.add(info);
+            }
+        }
+        catch(JSONException e){
+            Log.e("#","JSONException");
+        }
+        return cast;
+    }
+
     public static ExtendedMovieInfo extractMovieInfo(String response){
         if(TextUtils.isEmpty(response)){
             return null;
@@ -68,7 +104,7 @@ public class Query {
             JSONObject obj=new JSONObject(response);
             boolean age=obj.getBoolean("adult");
             String movie_age="",movie_name,movie_desc,movie_release,movie_poster;
-            String[] movie_genres={"","",""};
+            String[] movie_genres={"",""};
             int length=0,movie_id,movie_runtime;
             double movie_rating;
             if(age){
@@ -78,8 +114,8 @@ public class Query {
                 movie_age="UA";
             }
             JSONArray genre=(JSONArray) obj.getJSONArray("genres");
-            if(genre.length()>=3){
-                length=3;
+            if(genre.length()>=2){
+                length=2;
             }else{
                 length=genre.length();
             }
@@ -94,7 +130,7 @@ public class Query {
             movie_runtime=obj.getInt("runtime");
             movie_release=obj.getString("release_date");
             movie_poster=obj.getString("poster_path");
-            info=new ExtendedMovieInfo(movie_name,movie_desc,movie_id,movie_runtime,movie_release,movie_genres[0],movie_genres[1],movie_genres[2],movie_age,movie_rating,movie_poster);
+            info=new ExtendedMovieInfo(movie_name,movie_desc,movie_id,movie_runtime,movie_release,movie_genres[0],movie_genres[1],movie_age,movie_rating,movie_poster);
         }
         catch(JSONException e){
             Log.e("#","JSONException");
