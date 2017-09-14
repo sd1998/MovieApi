@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import com.squareup.picasso.Picasso;
@@ -20,7 +21,7 @@ import org.w3c.dom.Text;
 import static android.R.attr.format;
 
 public class Movie_info extends AppCompatActivity {
-
+    public static CustomGridAdapter adapter;
     public static ExtendedMovieInfo info=null;
     public ImageView movie_poster_view;
     public TextView movie_name_view ;
@@ -32,6 +33,8 @@ public class Movie_info extends AppCompatActivity {
     public TextView genre3_view;
     public TextView releasedate_view;
     public TextView runtime_view;
+    public static ArrayList<MovieInfo> similar_info=new ArrayList<MovieInfo>();
+    public static ArrayList<video_values> videos=new ArrayList<video_values>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +70,24 @@ public class Movie_info extends AppCompatActivity {
             public void onClick(View view) {
                 String url="https://api.themoviedb.org/3/movie/"+info.getId()+"/credits?api_key="+MainActivity.API_KEY;
                 Credits_Tasker task=new Credits_Tasker(Movie_info.this);
+                task.execute(url);
+            }
+        });
+        TextView similar_movie=(TextView) findViewById(R.id.similar_movies_view);
+        similar_movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url="https://api.themoviedb.org/3/movie/"+info.getId()+"/similar?api_key="+MainActivity.API_KEY+"&language=en-US&page=1";
+                Similar_Tasker task=new Similar_Tasker(Movie_info.this);
+                task.execute(url);
+            }
+        });
+        TextView trailer=(TextView) findViewById(R.id.view_Trailer);
+        trailer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            String url="https://api.themoviedb.org/3/movie/"+info.getId()+"/videos?api_key="+MainActivity.API_KEY+"&language=en-US";
+                video_tasker task=new video_tasker(Movie_info.this);
                 task.execute(url);
             }
         });

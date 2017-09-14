@@ -6,11 +6,13 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,6 +59,42 @@ public class Query {
         }
         ExtendedMovieInfo info=extractMovieInfo(response);
         return info;
+    }
+
+    public static ArrayList<video_values> getVideos(String murl){
+    URL url=createUrl(murl);
+        String response=null;
+        try{
+            response=makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","IOException");
+        }
+        ArrayList<video_values> videos=extractVideos(response);
+        return videos;
+    }
+
+    public static ArrayList<video_values> extractVideos(String response){
+     if(TextUtils.isEmpty(response)){
+         return null;
+     }
+     ArrayList<video_values> video=new ArrayList<video_values>();
+        try{
+            JSONObject obj=new JSONObject(response);
+            JSONArray result=(JSONArray) obj.getJSONArray("results");
+            for(int i=0;i<=result.length()-1;i++){
+                JSONObject array_obj=(JSONObject) result.getJSONObject(i);
+                String site=array_obj.getString("site");
+                String type=array_obj.getString("type");
+                String key=array_obj.getString("key");
+                video_values values=new video_values(key,type,site);
+                video.add(values);
+            }
+        }
+        catch(JSONException e){
+            Log.e("#","JSONException");
+        }
+        return video;
     }
 
     public static ArrayList<CastInfo> findCast(String murl){

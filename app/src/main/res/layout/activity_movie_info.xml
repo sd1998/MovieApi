@@ -146,5 +146,25 @@
        android:id="@+id/credits_view"
        />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/similar_movies_view"
+        android:text="Similar Movies"
+        android:layout_below="@id/credits_view"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/view_Trailer"
+        android:text="Get Trailer"
+        android:layout_below="@+id/similar_movies_view"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        />
+
 </RelativeLayout>
 
