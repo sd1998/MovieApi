@@ -61,6 +61,43 @@ public class Query {
         return info;
     }
 
+    public static ExtendedCastInfo extractCastInfo(String murl){
+    URL url=createUrl(murl);
+        String response=null;
+        try{
+            response=makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","IOException");
+        }
+        ExtendedCastInfo info=getCastdetails(response);
+        return info;
+    }
+
+    public static ExtendedCastInfo getCastdetails(String response){
+     if(TextUtils.isEmpty(response)){
+         return null;
+     }
+     ExtendedCastInfo info=null;
+     try{
+         JSONObject obj=new JSONObject(response);
+         String b_day=obj.getString("birthday");
+         String d_day=obj.getString("deathday");
+         if(d_day==null){
+             d_day="";
+         }
+         String name=obj.getString("name");
+         String desc=obj.getString("biography");
+         String p_ofb=obj.getString("place_of_birth");
+         String path=obj.getString("profile_path");
+         info=new ExtendedCastInfo(name,b_day,desc,path,p_ofb,d_day);
+     }
+     catch(JSONException e){
+         Log.e("#","JSONException");
+     }
+     return info;
+    }
+
     public static ArrayList<video_values> getVideos(String murl){
     URL url=createUrl(murl);
         String response=null;
@@ -123,7 +160,8 @@ public class Query {
                 String character=array_obj.getString("character");
                 String name=array_obj.getString("name");
                 String path=array_obj.getString("profile_path");
-                CastInfo info=new CastInfo(character,name,path);
+                int id=array_obj.getInt("id");
+                CastInfo info=new CastInfo(character,name,path,id);
                 cast.add(info);
             }
         }

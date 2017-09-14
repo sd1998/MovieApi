@@ -25,7 +25,8 @@
         <activity android:name=".Movie_info" />
         <activity android:name=".Cast_display" />
         <activity android:name=".Similar_movie" />
-        <activity android:name=".trailer"></activity>
+        <activity android:name=".trailer" />
+        <activity android:name=".Cast_data"></activity>
     </application>
 
 </manifest>

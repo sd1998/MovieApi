@@ -8,11 +8,13 @@ public class CastInfo {
     public String character;
     public String name;
     public String poster_path;
+    public int id;
 
-    public CastInfo(String ch,String nm,String path){
+    public CastInfo(String ch,String nm,String path,int iden){
         character=ch;
          name=nm;
         poster_path=path;
+        id=iden;
     }
 
     public String getCharacter(){
@@ -26,4 +28,10 @@ public class CastInfo {
     public String getPath(){
         return poster_path;
     }
+
+    public int getId(){
+        return id;
+    }
+
+
 }

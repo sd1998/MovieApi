@@ -45,10 +45,18 @@ public class cast_adapter extends ArrayAdapter<CastInfo> {
             holder=(ViewHolder) convertView.getTag();
             view=convertView;
         }
-        CastInfo info=getItem(position);
+        final CastInfo info=getItem(position);
         holder.cast_info.setText(info.getCharacter()+" : "+info.getName());
         String url = "http://image.tmdb.org/t/p/w185"+info.getPath();
         Picasso.with(getContext()).load(url).into(holder.poster_cast);
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String url="https://api.themoviedb.org/3/person/"+info.getId()+"?api_key="+MainActivity.API_KEY+"&language=en-US";
+                cast_tasker task=new cast_tasker(con);
+                task.execute(url);
+            }
+        });
         return convertView;
     }
 }
