@@ -6,9 +6,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 import static android.os.Build.VERSION_CODES.M;
 import static com.example.shashvatkedia.movieapi.MainActivity.adapt;
@@ -43,6 +46,9 @@ public class Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>> {
             MainActivity.movie = info;
             MainActivity.adapt=new CustomGridAdapter(c,info);
             MainActivity.grid.setAdapter(adapt);
+        }
+        else{
+            Toasty.error(c,"No such information found", Toast.LENGTH_LONG,true).show();
         }
     }
 }

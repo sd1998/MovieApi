@@ -3,8 +3,11 @@ package com.example.shashvatkedia.movieapi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Shashvat Kedia on 12-09-2017.
@@ -28,7 +31,12 @@ public class Credits_Tasker extends AsyncTask<String,Void,ArrayList<CastInfo>> {
     @Override
     protected  void onPostExecute(ArrayList<CastInfo> cast){
         Cast_display.cast=cast;
-        Intent i=new Intent(con,Cast_display.class);
-        con.startActivity(i);
+        if(cast!=null) {
+            Intent i = new Intent(con, Cast_display.class);
+            con.startActivity(i);
+        }
+        else{
+            Toasty.error(con,"No such information found", Toast.LENGTH_LONG,true).show();
+        }
     }
 }

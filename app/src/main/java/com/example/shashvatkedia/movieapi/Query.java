@@ -214,36 +214,6 @@ public class Query {
         return info;
     }
 
-    public static Integer findId(String murl){
-        URL url=createUrl(murl);
-        String response=null;
-        try{
-            response=makerequest(url);
-        }
-        catch(IOException e) {
-            Log.e("#", "IOException");
-        }
-        Integer id=extractId(response);
-        return id;
-    }
-
-    public static Integer extractId(String response){
-        Integer id=null;
-        if(TextUtils.isEmpty(response)){
-            return null;
-        }
-        try{
-            JSONObject obj=new JSONObject(response);
-            JSONArray arr=(JSONArray) obj.getJSONArray("results");
-            JSONObject info=(JSONObject) arr.getJSONObject(0);
-            id=info.getInt("id");
-        }
-        catch(JSONException e){
-            Log.e("#","JSONException");
-        }
-        return id;
-    }
-
     public static String makerequest(URL url) throws IOException{
         String json="";
         if(url == null){

@@ -4,8 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import es.dmoral.toasty.Toasty;
 
 import static android.icu.lang.UCharacter.GraphemeClusterBreak.T;
 
@@ -28,8 +31,13 @@ public class trailer extends AppCompatActivity {
                 count++;
             }
         }
-        ListView view=(ListView) findViewById(R.id.trailer_list);
-        simple_adapter adapt=new simple_adapter(this,values);
-        view.setAdapter(adapt);
+        if(values.size()>0) {
+            ListView view = (ListView) findViewById(R.id.trailer_list);
+            simple_adapter adapt = new simple_adapter(this, values);
+            view.setAdapter(adapt);
+        }
+        else{
+            Toasty.error(getApplicationContext(),"No such information found", Toast.LENGTH_LONG,true).show();
+        }
     }
 }

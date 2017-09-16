@@ -35,6 +35,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
     public static String API_KEY=""; //Enter your api key
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Toasty.Config.getInstance().apply();
         grid=(GridView) findViewById(R.id.namegrid);
         adapt=new CustomGridAdapter(this,movie);
         grid.setAdapter(adapt);

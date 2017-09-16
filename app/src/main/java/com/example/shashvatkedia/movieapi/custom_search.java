@@ -11,12 +11,14 @@ public class custom_search extends AppCompatActivity {
     public String query_movie="https://api.themoviedb.org/3/search/movie?api_key="+MainActivity.API_KEY+"&query=";
     public String check_query_movie=query_movie;
     public static Integer id;
+    public static com.wang.avi.AVLoadingIndicatorView anim;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_custom_search);
         final EditText name=(EditText) findViewById(R.id.movie_name);
         final Button submit=(Button) findViewById(R.id.search);
+        anim=findViewById(R.id.progress_anim);
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,6 +37,8 @@ public class custom_search extends AppCompatActivity {
                 query_movie=query_movie+query_name;
                 query_movie=query_movie.trim();
                 if(!query_movie.equals(check_query_movie)){
+                    anim.setVisibility(View.VISIBLE);
+                    anim.show();
                     Query_Tasker task=new Query_Tasker(custom_search.this);
                     task.execute(query_movie);
                 }

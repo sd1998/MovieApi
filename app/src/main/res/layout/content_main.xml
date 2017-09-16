@@ -9,7 +9,6 @@
     tools:context="com.example.shashvatkedia.movieapi.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
     <GridView
         android:id="@+id/namegrid"
         android:layout_width="match_parent"

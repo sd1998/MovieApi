@@ -4,14 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.squareup.picasso.Picasso;
 
+
+import es.dmoral.toasty.Toasty;
 
 import static com.example.shashvatkedia.movieapi.Movie_info.info;
 import static com.example.shashvatkedia.movieapi.R.id.age_view;
@@ -42,7 +46,12 @@ public class Movie_Info_Tasker extends AsyncTask<String,Void,ExtendedMovieInfo> 
     @Override
     protected void onPostExecute(ExtendedMovieInfo data){
         Movie_info.info=data;
-        Intent i =new Intent(c,Movie_info.class);
-        c.startActivity(i);
+        if(data!=null) {
+            Intent i = new Intent(c, Movie_info.class);
+            c.startActivity(i);
+        }
+        else{
+            Toasty.error(c,"No such information found", Toast.LENGTH_LONG,true).show();
+        }
     }
 }

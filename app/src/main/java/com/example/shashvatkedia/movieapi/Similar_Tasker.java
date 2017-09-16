@@ -3,8 +3,11 @@ package com.example.shashvatkedia.movieapi;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import es.dmoral.toasty.Toasty;
 
 import static com.example.shashvatkedia.movieapi.MainActivity.url;
 
@@ -36,6 +39,9 @@ public class Similar_Tasker extends AsyncTask<String,Void,ArrayList<MovieInfo>>{
              Movie_info.adapter=new CustomGridAdapter(con,info);
              Intent i=new Intent(con,Similar_movie.class);
              con.startActivity(i);
+         }
+         else{
+             Toasty.error(con,"No such information found", Toast.LENGTH_LONG,true).show();
          }
      }
 }
