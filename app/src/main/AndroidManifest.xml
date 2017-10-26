@@ -28,7 +28,8 @@
         <activity android:name=".trailer" />
         <activity android:name=".Cast_data" />
         <activity android:name=".Search_Results" />
-        <activity android:name=".Suggestions_Activity"></activity>
+        <activity android:name=".Suggestions_Activity" />
+        <activity android:name=".MovieRecomendation"></activity>
     </application>
 
 </manifest>
