@@ -1,5 +1,6 @@
 package com.example.shashvatkedia.movieapi;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -46,6 +47,41 @@ public class Query {
         }
         ArrayList<MovieInfo> info=extractjson(response);
         return info;
+    }
+
+    public static ArrayList<Movie_info.GenreObject> extractAvailableGenreList(String murl){
+        URL url = createUrl(murl);
+        String response = null;
+        try{
+            response = makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","Error IOException");
+        }
+        ArrayList<Movie_info.GenreObject> genreList = getGenreList(response);
+        return genreList;
+    }
+
+    public static ArrayList<Movie_info.GenreObject> getGenreList(String response){
+        if(TextUtils.isEmpty(response)){
+            return null;
+        }
+        ArrayList<Movie_info.GenreObject> genreList = new ArrayList<Movie_info.GenreObject>();
+        try{
+            JSONObject obj = new JSONObject(response);
+            JSONArray genreArray = obj.getJSONArray("genres");
+            for(int i = 0;i <= genreArray.length()-1;i++){
+                JSONObject arrayObject = genreArray.getJSONObject(i);
+                int genreId = arrayObject.getInt("id");
+                String genreName = arrayObject.getString("name");
+                Movie_info.GenreObject genre = new Movie_info.GenreObject(genreName,genreId);
+                genreList.add(genre);
+            }
+        }
+        catch(JSONException e){
+            Log.e("#","Error JSONException");
+        }
+        return genreList;
     }
 
     public static ExtendedMovieInfo findMovieInfo(String murl){

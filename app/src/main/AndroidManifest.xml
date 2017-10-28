@@ -29,7 +29,8 @@
         <activity android:name=".Cast_data" />
         <activity android:name=".Search_Results" />
         <activity android:name=".Suggestions_Activity" />
-        <activity android:name=".MovieRecomendation"></activity>
+        <activity android:name=".MovieRecomendation" />
+        <activity android:name=".SimilarGenreMovie"></activity>
     </application>
 
 </manifest>
