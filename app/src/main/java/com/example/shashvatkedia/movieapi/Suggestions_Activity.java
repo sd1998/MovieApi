@@ -23,6 +23,12 @@ public class Suggestions_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_suggestions_);
         TextView sugggestion_text_view=(TextView) findViewById(R.id.suggestions_text_view);
         final EditText suggestions=(EditText) findViewById(R.id.suggestions_data);
+        suggestions.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                suggestions.setText("");
+            }
+        });
         android.support.design.widget.FloatingActionButton fab_email=(android.support.design.widget.FloatingActionButton) findViewById(R.id.fab_email);
         fab_email.setOnClickListener(new View.OnClickListener() {
             @Override

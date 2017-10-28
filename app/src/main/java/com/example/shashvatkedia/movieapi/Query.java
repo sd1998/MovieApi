@@ -49,6 +49,43 @@ public class Query {
         return info;
     }
 
+    public static ArrayList<Reviews> extractReviewsList(String murl){
+        URL url = createUrl(murl);
+        String response = null;
+        try{
+            response = makerequest(url);
+        }
+        catch(IOException e){
+            Log.e("#","Error IOException");
+        }
+        ArrayList<Reviews> reviewsList = getReviewsList(response);
+        return reviewsList;
+    }
+
+    public static ArrayList<Reviews> getReviewsList(String response){
+        if(TextUtils.isEmpty(response)){
+            return null;
+        }
+        ArrayList<Reviews> reviewsList = new ArrayList<Reviews>();
+        try{
+            JSONObject object = new JSONObject(response);
+            JSONArray reviewsArray = object.getJSONArray("result");
+            for(int i = 0;i <= reviewsArray.length()-1;i++){
+                JSONObject arrayObject = reviewsArray.getJSONObject(i);
+                String id = arrayObject.getString("id");
+                String author = arrayObject.getString("author");
+                String url = arrayObject.getString("url");
+                String content = arrayObject.getString("content");
+                Reviews review = new Reviews(author,content,id,url);
+                reviewsList.add(review);
+            }
+        }
+        catch(JSONException e){
+            Log.e("#","Error JSONException");
+        }
+        return reviewsList;
+    }
+
     public static ArrayList<Movie_info.GenreObject> extractAvailableGenreList(String murl){
         URL url = createUrl(murl);
         String response = null;

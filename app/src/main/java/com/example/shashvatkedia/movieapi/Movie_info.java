@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,9 +38,12 @@ public class Movie_info extends AppCompatActivity {
     public TextView genre3_view;
     public TextView releasedate_view;
     public TextView runtime_view;
+    public TextView reviews;
+    public ListView reviewsListView;
     public static ArrayList<MovieInfo> similar_info=new ArrayList<MovieInfo>();
     public static ArrayList<video_values> videos=new ArrayList<video_values>();
     public static ArrayList<MovieInfo> moviesWithSimilarGenre = null;
+    public static ArrayList<Reviews>  reviewsList = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +57,8 @@ public class Movie_info extends AppCompatActivity {
         rating_view = (TextView) findViewById(R.id.rating_view);
         releasedate_view = (TextView) findViewById(R.id.date_view);
         age_view = (TextView) findViewById(R.id.age_view);
+        reviews = (TextView) findViewById(R.id.reviewsTextView);
+        reviewsListView = (ListView) findViewById(R.id.reviewsList);
         String murl = "http://image.tmdb.org/t/p/w185" + info.getPath();
         Picasso.with(getApplicationContext()).load(murl).into(movie_poster_view);
         movie_name_view.setText(info.getName());
@@ -108,6 +114,9 @@ public class Movie_info extends AppCompatActivity {
                 task.execute(url);
             }
         });
+        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+info.getId()+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US";
+        ReviewsTasker reviewsTasker = new ReviewsTasker();
+        reviewsTasker.execute(reviewsUrl);
     }
 
     public void generateGenreList(String genreToBeFound){
@@ -170,6 +179,28 @@ public class Movie_info extends AppCompatActivity {
         }
             Toasty.error(getApplicationContext(),"No Movies of the genre found",Toast.LENGTH_SHORT).show();
     }
+    }
+
+    public class ReviewsTasker extends AsyncTask<String,Void,ArrayList<Reviews>>{
+        @Override
+        protected ArrayList<Reviews> doInBackground(String... urls){
+            if(urls.length < 1 || urls[0] == null){
+                return null;
+            }
+            ArrayList<Reviews> reviewsList = Query.extractReviewsList(urls[0]);
+            return reviewsList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<Reviews> reviewList){
+            if(reviewList != null){
+                reviewsList = reviewList;
+
+            }
+            else{
+                Toasty.error(getApplicationContext(),"This movie has no reviews",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     public static class GenreObject{

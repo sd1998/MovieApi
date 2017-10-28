@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@drawable/suggestionboximprovebusiness"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.shashvatkedia.movieapi.Suggestions_Activity">
@@ -14,6 +15,8 @@
         android:text="Enter any type of bug you have encountered in the app"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:textSize = "25sp"
+        android:textColor="@color/colorAccent"
         />
 
     <EditText
@@ -21,9 +24,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/suggestions_data"
         android:layout_below="@id/suggestions_text_view"
-        android:hint="Enter the details about the bug here"
+        android:textSize="25sp"
         android:layout_marginTop="32dp"
+        android:text="Here"
         android:layout_marginLeft="8dp"
+        android:textColor="@color/colorAccent"
         />
 
     <android.support.design.widget.FloatingActionButton
