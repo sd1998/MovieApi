@@ -30,7 +30,8 @@
         <activity android:name=".Search_Results" />
         <activity android:name=".Suggestions_Activity" />
         <activity android:name=".MovieRecomendation" />
-        <activity android:name=".SimilarGenreMovie"></activity>
+        <activity android:name=".SimilarGenreMovie" />
+        <activity android:name=".SettingsActivity"></activity>
     </application>
 
 </manifest>

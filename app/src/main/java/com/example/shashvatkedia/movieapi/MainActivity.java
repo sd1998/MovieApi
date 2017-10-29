@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Movie;
+import android.location.SettingInjectorService;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -141,6 +142,11 @@ public class MainActivity extends AppCompatActivity
         if(id==R.id.suggestions_tile){
             Intent i=new Intent(this,Suggestions_Activity.class);
             startActivity(i);
+            return true;
+        }
+        else if(id==R.id.settingsMenuItem){
+            Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
         else{
