@@ -69,7 +69,7 @@ public class Query {
         ArrayList<Reviews> reviewsList = new ArrayList<Reviews>();
         try{
             JSONObject object = new JSONObject(response);
-            JSONArray reviewsArray = object.getJSONArray("result");
+            JSONArray reviewsArray = object.getJSONArray("results");
             for(int i = 0;i <= reviewsArray.length()-1;i++){
                 JSONObject arrayObject = reviewsArray.getJSONObject(i);
                 String id = arrayObject.getString("id");

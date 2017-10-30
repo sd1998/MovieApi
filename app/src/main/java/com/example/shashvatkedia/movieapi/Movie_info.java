@@ -24,6 +24,7 @@ import org.w3c.dom.Text;
 import es.dmoral.toasty.Toasty;
 
 import static android.R.attr.format;
+import static android.util.Log.e;
 
 public class Movie_info extends AppCompatActivity {
     public static CustomGridAdapter adapter;
@@ -116,6 +117,7 @@ public class Movie_info extends AppCompatActivity {
         });
         String reviewsUrl = "https://api.themoviedb.org/3/movie/"+info.getId()+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US";
         ReviewsTasker reviewsTasker = new ReviewsTasker();
+        Log.e("#",""+info.getId());
         reviewsTasker.execute(reviewsUrl);
     }
 
@@ -136,6 +138,7 @@ public class Movie_info extends AppCompatActivity {
             if(urls.length < 1 || urls[0] == null){
                 return null;
             }
+            e("#","1");
             ArrayList<GenreObject> genreList = Query.extractAvailableGenreList(urls[0]);
             return genreList;
         }
@@ -146,7 +149,8 @@ public class Movie_info extends AppCompatActivity {
                 for(int i = 0;i <= genreList.size()-1;i++){
                     if(genreList.get(i).getGenreName().equalsIgnoreCase(genreToBeFound)){
                         GenreObject genreMatched = genreList.get(i);
-                        String url = "https://api.themoviedb.org/3/genre/"+genreMatched.getGenreId()+"/movies?api_key"+MainActivity.API_KEY+"&language=en-US&sort_by=created_at.desc";
+                        String url = "https://api.themoviedb.org/3/movie/"+genreList.get(i).getGenreId()+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US&page=1";
+                        e("#",url);
                         FindSameGenreMovieTasker sameGenreMovieTasker = new FindSameGenreMovieTasker();
                         sameGenreMovieTasker.execute(url);
                      return;
@@ -155,7 +159,7 @@ public class Movie_info extends AppCompatActivity {
                 Toasty.error(getApplicationContext(),"Movies of this genre cannot be found", Toast.LENGTH_SHORT).show();
             }
             else{
-                Log.e("#","Error Genre Empty");
+                e("#","Error Genre Empty");
             }
         }
     }
@@ -195,7 +199,6 @@ public class Movie_info extends AppCompatActivity {
         protected void onPostExecute(ArrayList<Reviews> reviewList){
             if(reviewList != null){
                 reviewsList = reviewList;
-
             }
             else{
                 Toasty.error(getApplicationContext(),"This movie has no reviews",Toast.LENGTH_SHORT).show();
