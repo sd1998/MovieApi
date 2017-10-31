@@ -1,6 +1,8 @@
 package com.example.shashvatkedia.movieapi;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Movie;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -89,6 +91,12 @@ public class Movie_info extends AppCompatActivity {
         runtime_view.setText(runtime);
         movie_desc_view.setText(info.getDesc());
         TextView credits=(TextView) findViewById(R.id.credits_view);
+        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+Integer.toString(info.getId())+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US";
+        ReviewsTasker reviewsTasker = new ReviewsTasker();
+        reviewsTasker.execute(reviewsUrl);
+        String postersUrl = "https://api.themoviedb.org/3/movie/"+Integer.toString(info.getId())+"/images?api_key="+MainActivity.API_KEY+"&language=en-US";
+        Posters posters = new Posters(Movie_info.this);
+        posters.execute(postersUrl);
         credits.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,10 +123,6 @@ public class Movie_info extends AppCompatActivity {
                 task.execute(url);
             }
         });
-        String reviewsUrl = "https://api.themoviedb.org/3/movie/"+info.getId()+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US";
-        ReviewsTasker reviewsTasker = new ReviewsTasker();
-        Log.e("#",""+info.getId());
-        reviewsTasker.execute(reviewsUrl);
     }
 
     public void generateGenreList(String genreToBeFound){
@@ -138,7 +142,6 @@ public class Movie_info extends AppCompatActivity {
             if(urls.length < 1 || urls[0] == null){
                 return null;
             }
-            e("#","1");
             ArrayList<GenreObject> genreList = Query.extractAvailableGenreList(urls[0]);
             return genreList;
         }
@@ -149,7 +152,7 @@ public class Movie_info extends AppCompatActivity {
                 for(int i = 0;i <= genreList.size()-1;i++){
                     if(genreList.get(i).getGenreName().equalsIgnoreCase(genreToBeFound)){
                         GenreObject genreMatched = genreList.get(i);
-                        String url = "https://api.themoviedb.org/3/movie/"+genreList.get(i).getGenreId()+"/reviews?api_key="+MainActivity.API_KEY+"&language=en-US&page=1";
+                        String url = "https://api.themoviedb.org/3/genre/"+genreMatched.getGenreId()+"/movies?api_key="+MainActivity.API_KEY+"&language=en-US&sort_by=created_at.asc";
                         e("#",url);
                         FindSameGenreMovieTasker sameGenreMovieTasker = new FindSameGenreMovieTasker();
                         sameGenreMovieTasker.execute(url);
@@ -159,7 +162,7 @@ public class Movie_info extends AppCompatActivity {
                 Toasty.error(getApplicationContext(),"Movies of this genre cannot be found", Toast.LENGTH_SHORT).show();
             }
             else{
-                e("#","Error Genre Empty");
+                Log.e("#","Error Genre Empty");
             }
         }
     }
@@ -204,6 +207,32 @@ public class Movie_info extends AppCompatActivity {
                 Toasty.error(getApplicationContext(),"This movie has no reviews",Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public class Posters extends AsyncTask<String,Void,ArrayList<String>>{
+        Context con;
+
+    public Posters(Context context){
+        super();
+        con = context;
+    }
+
+    @Override
+        protected ArrayList<String> doInBackground(String... urls){
+        if(urls.length < 1 || urls[0] == null){
+            return null;
+        }
+        ArrayList<String> posterPaths = Query.extraxtPosterPaths(urls[0]);
+        return posterPaths;
+    }
+
+    @Override
+        protected void onPostExecute(ArrayList<String> posterPaths){
+        if(posterPaths != null || !posterPaths.isEmpty()){
+            
+        }
+    }
+
     }
 
     public static class GenreObject{

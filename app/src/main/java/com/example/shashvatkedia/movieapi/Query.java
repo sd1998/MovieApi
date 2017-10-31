@@ -40,7 +40,7 @@ public class Query {
         URL url=createUrl(murl);
         String response = null;
         try{
-            response=makerequest(url);
+            response=makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","Error IOException");
@@ -49,11 +49,50 @@ public class Query {
         return info;
     }
 
+    public static ArrayList<String> extraxtPosterPaths(String murl){
+        URL url = createUrl(murl);
+        String response = null;
+        try{
+            response = makerequest(url,1);
+        }
+        catch(IOException e){
+            Log.e("#","Error IOException");
+        }
+        ArrayList<String> posterPaths = getPosterPaths(response);
+        return posterPaths;
+    }
+
+    public static ArrayList<String> getPosterPaths(String response){
+        if(TextUtils.isEmpty(response)){
+            return null;
+        }
+        ArrayList<String> posterPaths = new ArrayList<String>();
+        try{
+            JSONObject object = new JSONObject(response);
+            JSONArray posterArray = object.getJSONArray("posters");
+            for(int i = 0;i <= posterArray.length()-1;i++){
+                JSONObject posterPathObject = posterArray.getJSONObject(i);
+                String posterPath = posterPathObject.getString("file_path");
+                posterPaths.add(posterPath);
+            }
+            JSONArray backdropsArray = object.getJSONArray("backrops");
+            for(int i = 0;i <= backdropsArray.length()-1;i++){
+                JSONObject backdropsObject = backdropsArray.getJSONObject(i);
+                String backdropsPath = backdropsObject.getString("file_path");
+                posterPaths.add(backdropsPath);
+            }
+        }
+        catch (JSONException e){
+            Log.e("#","Error JSONException");
+        }
+        return posterPaths;
+    }
+
     public static ArrayList<Reviews> extractReviewsList(String murl){
         URL url = createUrl(murl);
         String response = null;
         try{
-            response = makerequest(url);
+            response = makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","Error IOException");
@@ -90,7 +129,7 @@ public class Query {
         URL url = createUrl(murl);
         String response = null;
         try{
-            response = makerequest(url);
+            response = makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","Error IOException");
@@ -125,7 +164,7 @@ public class Query {
         URL url=createUrl(murl);
         String response=null;
         try{
-            response=makerequest(url);
+            response=makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","IOException");
@@ -138,7 +177,7 @@ public class Query {
     URL url=createUrl(murl);
         String response=null;
         try{
-            response=makerequest(url);
+            response=makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","IOException");
@@ -175,7 +214,7 @@ public class Query {
     URL url=createUrl(murl);
         String response=null;
         try{
-            response=makerequest(url);
+            response=makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","IOException");
@@ -211,7 +250,7 @@ public class Query {
         URL url=createUrl(murl);
         String response=null;
         try{
-            response=makerequest(url);
+            response=makerequest(url,0);
         }
         catch(IOException e){
             Log.e("#","IOException");
@@ -287,7 +326,7 @@ public class Query {
         return info;
     }
 
-    public static String makerequest(URL url) throws IOException{
+    public static String makerequest(URL url,int type) throws IOException{
         String json="";
         if(url == null){
             return json;
@@ -296,7 +335,12 @@ public class Query {
         InputStream input = null;
         try{
             connection=(HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+            if(type == 0) {
+                connection.setRequestMethod("GET");
+            }
+            else{
+                connection.setRequestMethod("POST");
+            }
             connection.addRequestProperty("Accept", "application/json");
             connection.connect();
             if(connection.getResponseCode()==200){
