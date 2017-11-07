@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Movie;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -229,7 +230,9 @@ public class Movie_info extends AppCompatActivity {
     @Override
         protected void onPostExecute(ArrayList<String> posterPaths){
         if(posterPaths != null || !posterPaths.isEmpty()){
-            
+            PosterViewPagerAdapter adapter = new PosterViewPagerAdapter(getApplicationContext(),posterPaths);
+            ViewPager posterViewPager = (ViewPager) findViewById(R.id.posterViewPager);
+            posterViewPager.setAdapter(adapter);
         }
     }
 

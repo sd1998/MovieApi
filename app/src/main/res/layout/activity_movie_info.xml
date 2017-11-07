@@ -169,10 +169,23 @@
         android:layout_marginTop="16dp"
         />
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/view_Trailer"
+            android:id="@+id/posterViewPagerLinearLayout">
+
+            <android.support.v4.view.ViewPager
+                android:layout_width="match_parent"
+                android:layout_height="128dp"
+                android:id="@+id/posterViewPager"/>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/posterViewPagerLinearLayout"
             >
 
             <TextView
