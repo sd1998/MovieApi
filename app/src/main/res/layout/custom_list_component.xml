@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,7 +17,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/search_movie_name"
         android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@id/search_movie_poster"
         android:layout_marginTop="8dp"
         />
 
-</LinearLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/search_movie_description"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:visibility="gone"
+        android:layout_toRightOf="@id/search_movie_poster"
+        android:layout_below="@id/search_movie_name"
+        />
+
+</RelativeLayout>
