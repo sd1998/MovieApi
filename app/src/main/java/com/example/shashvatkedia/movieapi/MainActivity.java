@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity
     private static String popular_url="https://api.themoviedb.org/3/movie/popular?api_key="+API_KEY+"&language=en-US";
     private static String top_rated_url="https://api.themoviedb.org/3/movie/top_rated?api_key="+API_KEY+"&language=en-US";
     private static String upcoming_url="https://api.themoviedb.org/3/movie/upcoming?api_key="+API_KEY+"&language=en-US";
+    private static String latest_url="https://api.themoviedb.org/3/movie/latest?api_key="+API_KEY+"&language=en-US";
+    private static String nowPlaying_url="https://api.themoviedb.org/3/movie/now_playing?api_key="+API_KEY+"&language=en-US";
     public static String url="";
     public  static ArrayList<MovieInfo> movie=new ArrayList<MovieInfo>();
     public static CustomGridAdapter adapt;
@@ -66,7 +68,7 @@ public class MainActivity extends AppCompatActivity
         grid=(GridView) findViewById(R.id.namegrid);
         adapt=new CustomGridAdapter(this,movie);
         grid.setAdapter(adapt);
-        defineView(R.id.Popular);
+        defineView(R.id.Latest);
     }
 
     @Override
@@ -83,17 +85,23 @@ public class MainActivity extends AppCompatActivity
         int temp=1;
         Fragment frag=null;
         switch(id){
-            case R.id.Popular :
+            case R.id.Latest :
                 temp=1;
                 break;
-            case R.id.TopRated :
+            case R.id.NowPlaying :
                 temp=2;
                 break;
-            case R.id.Upcoming :
+            case R.id.Popular :
                 temp=3;
                 break;
-            case R.id.search :
+            case R.id.TopRated :
                 temp=4;
+                break;
+            case R.id.Upcoming :
+                temp=5;
+                break;
+            case R.id.search :
+                temp=6;
                 break;
         }
         setAdapt(temp);
@@ -105,7 +113,7 @@ public class MainActivity extends AppCompatActivity
             trans.replace(R.id.content_frame,frag);
             trans.commit();
         }
-        if(temp==4){
+        if(temp==6){
             Intent i=new Intent(MainActivity.this,custom_search.class);
             startActivity(i);
         }
@@ -114,15 +122,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void setAdapt(int temp){
-        if(temp!=4){
+        if(temp!=6){
             if(temp==1){
-              url=popular_url;
+              url=latest_url;
             }
             else if(temp==2){
+                url=nowPlaying_url;
+            }
+            else if(temp==3){
+                url=popular_url;
+            }
+            else if(temp==4){
                 url=top_rated_url;
             }
-            else {
-                url = upcoming_url;
+            else{
+                url=upcoming_url;
             }
             Tasker task=new Tasker(MainActivity.this);
             task.execute(url);

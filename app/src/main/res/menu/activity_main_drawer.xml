@@ -3,6 +3,14 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/Latest"
+            android:title="Latest"
+            />
+        <item
+            android:id="@+id/NowPlaying"
+            android:title="Now Playing"
+            />
+        <item
             android:id="@+id/Popular"
             android:title="Popular" />
         <item
