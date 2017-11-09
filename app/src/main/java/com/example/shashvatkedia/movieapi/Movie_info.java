@@ -5,11 +5,18 @@ import android.content.Intent;
 import android.graphics.Movie;
 import android.media.Image;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentManagerNonConfig;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewGroupCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,6 +34,7 @@ import org.w3c.dom.Text;
 import es.dmoral.toasty.Toasty;
 
 import static android.R.attr.format;
+import static android.R.attr.fragment;
 import static android.util.Log.e;
 
 public class Movie_info extends AppCompatActivity {
@@ -48,6 +56,7 @@ public class Movie_info extends AppCompatActivity {
     public static ArrayList<video_values> videos=new ArrayList<video_values>();
     public static ArrayList<MovieInfo> moviesWithSimilarGenre = null;
     public static ArrayList<Reviews>  reviewsList = null;
+    public static ArrayList<MovieInfo> recommendedMovie;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,6 +131,15 @@ public class Movie_info extends AppCompatActivity {
             String url="https://api.themoviedb.org/3/movie/"+info.getId()+"/videos?api_key="+MainActivity.API_KEY+"&language=en-US";
                 video_tasker task=new video_tasker(Movie_info.this);
                 task.execute(url);
+            }
+        });
+        final TextView recommendedMovie = (TextView) findViewById(R.id.recommendedMovieTextView);
+        recommendedMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = "https://api.themoviedb.org/3/movie/"+info.getId()+"/recommendations?api_key="+MainActivity.API_KEY+"&language=en-US";
+                RecommendedMovieTasker recommendedMovieTasker = new RecommendedMovieTasker();
+                recommendedMovieTasker.execute(url);
             }
         });
     }
@@ -232,10 +250,50 @@ public class Movie_info extends AppCompatActivity {
         if(posterPaths != null || !posterPaths.isEmpty()){
             PosterViewPagerAdapter adapter = new PosterViewPagerAdapter(getApplicationContext(),posterPaths);
             ViewPager posterViewPager = (ViewPager) findViewById(R.id.posterViewPager);
+            posterViewPager.setVisibility(View.VISIBLE);
             posterViewPager.setAdapter(adapter);
+        }
+        else{
+            ViewPager posterViewPager  = (ViewPager) findViewById(R.id.posterViewPager);
+            posterViewPager.setVisibility(View.GONE);
         }
     }
 
+    }
+
+    public class RecommendedMovieTasker extends AsyncTask<String,Void,ArrayList<MovieInfo>>{
+    @Override
+        protected ArrayList<MovieInfo> doInBackground(String... urls){
+        if(urls.length < 1 || urls[0] == null){
+            return null;
+        }
+        ArrayList<MovieInfo> recommendedMovies = Query.fetchData(urls[0]);
+        return recommendedMovies;
+    }
+
+    @Override
+        protected void onPostExecute(ArrayList<MovieInfo> recommendedMovies){
+        if(recommendedMovies != null || !recommendedMovies.isEmpty()) {
+            recommendedMovie = recommendedMovies;
+            CustomFragment fragment = new CustomFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.add(R.id.recommendedMovieFragment, fragment);
+            fragmentTransaction.commit();
+        }
+        //Add code for populating the list view in fragment
+    }
+    }
+
+    public static class CustomFragment extends Fragment{
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
+            View convertView = inflater.inflate(R.layout.custom_fragment_resource,container,false);
+            ListView recommendedMovieListView = (ListView) convertView.findViewById(R.id.reommendedMovieListView);
+            searchAdapter adapter = new searchAdapter(getActivity(),recommendedMovie);
+            recommendedMovieListView.setAdapter(adapter);
+            return convertView;
+        }
     }
 
     public static class GenreObject{
