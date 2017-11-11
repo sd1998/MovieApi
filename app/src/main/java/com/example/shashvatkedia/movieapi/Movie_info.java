@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -275,6 +276,8 @@ public class Movie_info extends AppCompatActivity {
         protected void onPostExecute(ArrayList<MovieInfo> recommendedMovies){
         if(recommendedMovies != null || !recommendedMovies.isEmpty()) {
             recommendedMovie = recommendedMovies;
+            LinearLayout fragmentLinearLayout = (LinearLayout) findViewById(R.id.fragmentLinearLayout);
+            fragmentLinearLayout.setVisibility(View.VISIBLE);
             CustomFragment fragment = new CustomFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -286,6 +289,10 @@ public class Movie_info extends AppCompatActivity {
     }
 
     public static class CustomFragment extends Fragment{
+
+        public CustomFragment(){
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
             View convertView = inflater.inflate(R.layout.custom_fragment_resource,container,false);

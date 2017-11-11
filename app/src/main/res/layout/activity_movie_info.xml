@@ -15,12 +15,20 @@
             android:orientation="horizontal"
             >
 
-            <fragment
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
-                android:id="@+id/recommendedMovieFragment"
-                />
+                android:visibility="invisible"
+                android:id="@+id/fragmentLinearLayout">
+
+                <fragment
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/recommendedMovieFragment"
+                    />
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
