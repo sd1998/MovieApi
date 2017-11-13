@@ -31,7 +31,8 @@
         <activity android:name=".Suggestions_Activity" />
         <activity android:name=".MovieRecomendation" />
         <activity android:name=".SimilarGenreMovie" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".ShowTrailer"></activity>
     </application>
 
 </manifest>

@@ -2,13 +2,18 @@ package com.example.shashvatkedia.movieapi;
 
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -32,13 +37,16 @@ public class simple_adapter extends ArrayAdapter<video_values>{
         }
         final video_values val=getItem(position);
         TextView trailer=(TextView) convetView.findViewById(R.id.trailer_layout_view);
+        ImageView thumbnail=(ImageView) convetView.findViewById(R.id.youtubeThumbnail);
+        String thumbnailUrl = "http://img.youtube.com/vi/\" + " + val.getKey() + " +\"/0.jpg";
+        Picasso.with(con).load(thumbnailUrl).into(thumbnail);
         trailer.setText(val.getType());
         trailer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Uri uri=Uri.parse(youtube_url+val.getKey());
-              Intent i=new Intent(Intent.ACTION_VIEW,uri);
-                con.startActivity(i);
+                Intent intent = new Intent(con,ShowTrailer.class);
+                intent.putExtra("youtubeKey",val.getKey());
+                con.startActivity(intent);
             }
         });
         return convetView;

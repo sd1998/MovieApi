@@ -144,7 +144,6 @@ public class Movie_info extends AppCompatActivity {
             }
         });
     }
-
     public void generateGenreList(String genreToBeFound){
         String genreUrl = "https://api.themoviedb.org/3/genre/movie/list?api_key="+MainActivity.API_KEY+"&language=en-US";
         GenreListTasker genreTasker = new GenreListTasker(genreToBeFound);
