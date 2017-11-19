@@ -37,4 +37,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/dagger-1.2.5.jar')
+    compile files('libs/retrofit-2.3.0.jar')
+    compile files('libs/pollexor-2.0.4.jar')
 }

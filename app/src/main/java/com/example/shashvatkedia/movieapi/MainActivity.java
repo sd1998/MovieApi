@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
 
+import com.squareup.pollexor.Thumbor;
+
 import java.util.ArrayList;
 
 import es.dmoral.toasty.Toasty;

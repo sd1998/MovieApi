@@ -283,7 +283,6 @@ public class Movie_info extends AppCompatActivity {
             fragmentTransaction.add(R.id.recommendedMovieFragment, fragment);
             fragmentTransaction.commit();
         }
-        //Add code for populating the list view in fragment
     }
     }
 
@@ -300,6 +299,10 @@ public class Movie_info extends AppCompatActivity {
             recommendedMovieListView.setAdapter(adapter);
             return convertView;
         }
+    }
+
+    public class {
+
     }
 
     public static class GenreObject{
