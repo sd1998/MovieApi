@@ -300,11 +300,7 @@ public class Movie_info extends AppCompatActivity {
             return convertView;
         }
     }
-
-    public class {
-
-    }
-
+    
     public static class GenreObject{
         private String genreName;
         private int genreId;
