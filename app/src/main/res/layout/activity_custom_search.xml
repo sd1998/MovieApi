@@ -39,12 +39,28 @@
         android:layout_marginLeft="16dp"
         />
 
+    <RadioButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/movie_name"
+        android:id="@+id/advanced_search_radio_button"
+        android:text="Advanced Search"
+        />
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/advanced_search_fragment"
+        android:layout_below="@id/advanced_search_radio_button"
+        android:visibility="gone"
+        />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/search"
         android:text="Search"
-        android:layout_below="@id/enter_name"
+        android:layout_below="@id/advanced_search_fragment"
         android:layout_marginTop="16dp"
         />
 
